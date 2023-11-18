@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Load the Paper.js library -->
+    <script type="text/javascript" src="paper-full.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff; /* 배경색 설정 */
+            font-family: 'Arial', sans-serif; /* 폰트 설정 */
+            color: #676767; /* 텍스트 색상 설정 */
+        }
+        canvas {
+            width: 100%;
+            height: 80%;
+        }
+        .instruction {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* 중앙 정렬 설정 */
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Define inlined PaperScript associated with myCanvas -->
+    <script type="text/paperscript" canvas="myCanvas">
+        tool.minDistance = 10;
+
+        var path;
+        var currentColor = '#8DD7F8'; // 초기 색상 설정
+        
+        function onMouseDown(event) {
+            var randomStrokeWidth = Math.floor(Math.random() * (100 - 10 + 10)) + 20;
+            path = new Path();
+            path.strokeWidth = randomStrokeWidth;
+            path.strokeColor = currentColor;
+            path.smooth();
+            path.blendMode = 'multiply';
+        
+            var randomDashLength = Math.floor(Math.random() * (500 - 100 + 40)) + 40;
+            var randomDashDistance = Math.floor(Math.random() * (100 - 30 + 30)) + 30;
+            path.dashArray = [randomDashLength, randomDashDistance];
+        
+            path.add(event.point);
+        }
+        
+        function onMouseDrag(event) {
+            path.add(event.point);
+        
+            if (path) {
+                currentColor = (currentColor === '#8DD7F8') ? '#F7E28C' : '#8DD7F8';
+                path.strokeColor = currentColor;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="instruction">free to drag!</div>
+    <canvas id="myCanvas" resize></canvas>
+</body>
+</html>
